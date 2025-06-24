@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>aejin-mino</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+  <style>
+    :root {
+      --bg: #0e1014;
+      --card: #1c1f26;
+      --accent: #4f9eff;
+      --text: #dcdcdc;
+      --muted: #8a8a8a;
+      --highlight: #7ac6ff;
+      --note: #f0db4f;
+      --radius: 14px;
+      --shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+    body.light {
+      --bg: #ffffff;
+      --card: #f6f6f6;
+      --accent: #007bff;
+      --text: #222222;
+      --muted: #555555;
+      --highlight: #005fcc;
+      --note: #ffd700;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: "Inter", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 1.5rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      transition: background 0.3s, color 0.3s;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.3rem;
+      font-weight: 700;
+      color: var(--highlight);
+      margin-bottom: 1.8rem;
+    }
+    .section {
+      background-color: var(--card);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+      transition: background 0.3s;
+    }
+    button {
+      margin: 8px 8px 0 0;
+      padding: 10px 16px;
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.2s ease;
+    }
+    button:hover {
+      background-color: #3a8ce0;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      border: none;
+      border-radius: 10px;
+      background-color: #2a2d34;
+      color: var(--text);
+      font-size: 1rem;
+    }
+    body.light input[type="text"] {
+      background-color: #e2e2e2;
+      color: #1f1f1f;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 12px;
+    }
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-bottom: 1px solid #3a3f4a;
+      cursor: pointer;
+      transition: color 0.2s;
+      user-select: none;
+    }
+    li:hover {
+      color: var(--accent);
+    }
+    li.done {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+    .delete-btn {
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 0 8px;
+      transition: color 0.2s;
+    }
+    .delete-btn:hover {
+      color: #ff6b6b;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      margin-right: 16px;
+      font-weight: 500;
+    }
+    #quote {
+      font-style: italic;
+      color: var(--highlight);
+      font-weight: 500;
+      font-size: 1.1rem;
+    }
+    iframe {
+      border: none;
+      border-radius: 12px;
+      width: 100%;
+      height: 400px;
+      margin-top: 1rem;
+    }
+    .icon {
+      margin-right: 6px;
+      color: var(--accent);
+    }
+    strong {
+      color: var(--note);
+      font-weight: 600;
+    }
+    #themeToggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 12px;
+      cursor: pointer;
+      z-index: 100;
+    }
+    .weather {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <button id="themeToggle">🌑 테마</button>
+  <h1>090317</h1>
+
+  <div class="section" id="clockSection">
+    <i class="fa-regular fa-clock icon"></i> <span id="clock"></span> |
+    <i class="fa-regular fa-calendar icon"></i> <span id="date"></span>
+    <div class="weather" id="weather">🌦 날씨 정보를 불러오는 중...</div>
+  </div>
+
+  <div class="section">
+    <i class="fa-solid fa-music icon"></i> <strong>음악 재생</strong><br />
+    <button
+      onclick="playMusic('https://www.youtube.com/embed/LSUoiZ6Hu8g?autoplay=1&loop=1&playlist=LSUoiZ6Hu8g')"
+    >
+      잔잔함
+    </button>
+    <button
+      onclick="playMusic('https://www.youtube.com/embed/PS2H-Q-Prjc?autoplay=1')"
+    >
+      플레이리스트
+    </button>
+    <button
+      onclick="playMusic('https://www.youtube.com/embed/7NOSDKb0HlU?autoplay=1')"
+    >
+      감성
+    </button>
+    <div id="musicPlayer"></div>
+  </div>
+
+  <div class="section">
+    <i class="fa-solid fa-link icon"></i> <strong>자주 가는 링크</strong><br />
+    <a href="https://www.youtube.com" target="_blank">유튜브</a>
+    <a href="https://classroom.google.com/u/1/h" target="_blank">클래스룸</a>
+    <a href="https://sangin.riroschool.kr" target="_blank">학교</a>
+  </div>
+
+  <div class="section">
+    <i class="fa-solid fa-list-check icon"></i> <strong>오늘 할 일</strong><br />
+    <input type="text" id="todoInput" placeholder="할 일을 입력하세요" />
+    <button onclick="addTodo()">추가</button>
+    <ul id="todoList"></ul>
+  </div>
+
+  <div class="section">
+    <i class="fa-regular fa-note-sticky icon"></i> <strong>오늘의 메모</strong><br />
+    <input type="text" id="memo" placeholder="메모 입력" oninput="saveMemo()" />
+  </div>
+
+  <div class="section">
+    <i class="fa-solid fa-quote-left icon"></i> <strong>오늘의 말</strong><br />
+    <p id="quote">const quote</p>
+  </div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      document.getElementById("clock").innerText = now.toLocaleTimeString();
+      document.getElementById("date").innerText = now.toLocaleDateString("ko-KR");
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function playMusic(url) {
+      document.getElementById(
+        "musicPlayer"
+      ).innerHTML = `<iframe src="${url}" allow="autoplay" allowfullscreen></iframe>`;
+    }
+
+    const todoList = document.getElementById("todoList");
+    const todos = JSON.parse(localStorage.getItem("todos") || "[]");
+
+    function renderTodos() {
+      todoList.innerHTML = "";
+      todos.forEach((todo, i) => {
+        const li = document.createElement("li");
+
+        // 텍스트 스팬
+        const textSpan = document.createElement("span");
+        textSpan.textContent = todo.text;
+        textSpan.className = todo.done ? "done" : "";
+        textSpan.style.flexGrow = "1";
+        textSpan.style.cursor = "pointer";
+        textSpan.onclick = () => {
+          todos[i].done = !todos[i].done;
+          saveTodos();
+          renderTodos();
+        };
+
+        // 삭제 버튼
+        const delBtn = document.createElement("button");
+        delBtn.className = "delete-btn";
+        delBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+        delBtn.title = "삭제";
+        delBtn.onclick = (e) => {
+          e.stopPropagation(); // li 클릭 이벤트 방지
+          if (confirm(`"${todo.text}" 을(를) 삭제하시겠습니까?`)) {
+            todos.splice(i, 1);
+            saveTodos();
+            renderTodos();
+          }
+        };
+
+        li.appendChild(textSpan);
+        li.appendChild(delBtn);
+        todoList.appendChild(li);
+      });
+    }
+
+    function addTodo() {
+      const input = document.getElementById("todoInput");
+      if (input.value.trim()) {
+        todos.push({ text: input.value, done: false });
+        input.value = "";
+        saveTodos();
+        renderTodos();
+      }
+    }
+    function saveTodos() {
+      localStorage.setItem("todos", JSON.stringify(todos));
+    }
+    renderTodos();
+
+    const memoInput = document.getElementById("memo");
+    memoInput.value = localStorage.getItem("memo") || "";
+    function saveMemo() {
+      localStorage.setItem("memo", memoInput.value);
+    }
+
+    const quotes = [
+      "다음 기회에..."
+    ];
+    document.getElementById("quote").innerText =
+      quotes[Math.floor(Math.random() * quotes.length)];
+
+    const toggleBtn = document.getElementById("themeToggle");
+    toggleBtn.onclick = () => {
+      document.body.classList.toggle("light");
+      toggleBtn.textContent = document.body.classList.contains("light")
+        ? "☀️ 테마"
+        : "🌑 테마";
+    };
+
+    async function loadWeather() {
+      try {
+        const res = await fetch("https://wttr.in/Daegu?format=3");
+        if (!res.ok) throw new Error("네트워크 응답 실패");
+        const text = await res.text();
+        document.getElementById("weather").innerText = `대구 상인동 날씨: ${text}`;
+      } catch (err) {
+        document.getElementById("weather").innerText =
+          "날씨 정보를 불러올 수 없습니다.";
+        console.error(err);
+      }
+    }
+    loadWeather();
+  </script>
+</body>
+</html>
