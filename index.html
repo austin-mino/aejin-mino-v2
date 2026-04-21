@@ -164,11 +164,25 @@
       cursor: pointer;
       z-index: 100;
     }
-    .weather {
-      margin-top: 10px;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
+.weather-card {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 12px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.weather-card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.weather-location {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
   </style>
 </head>
 <body>
@@ -178,7 +192,10 @@
   <div class="section" id="clockSection">
     <i class="fa-regular fa-clock icon"></i> <span id="clock"></span> |
     <i class="fa-regular fa-calendar icon"></i> <span id="date"></span>
-    <div class="weather" id="weather">🌦 날씨 정보를 불러오는 중...</div>
+    <div class="weather-card">
+  <img src="https://wttr.in/Daegu.png?m&lang=ko" alt="대구 상인동 날씨" />
+  <div class="weather-location">대구 상인동</div>
+</div>
   </div>
 
   <div class="section">
@@ -315,25 +332,7 @@
         : "🌑 테마";
     };
 
-  async function loadWeather() {
-  try {
-    const res = await fetch("https://wttr.in/Daegu?format=j1");
-    if (!res.ok) throw new Error("네트워크 응답 실패");
 
-    const data = await res.json();
-
-    const temp = data.current_condition[0].temp_C;
-    const desc = data.current_condition[0].weatherDesc[0].value;
-
-    document.getElementById("weather").innerText =
-      `대구 상인동 날씨: ${desc}, ${temp}°C`;
-  } catch (err) {
-    document.getElementById("weather").innerText =
-      "날씨 정보를 불러올 수 없습니다.";
-    console.error(err);
-  }
-}
-loadWeather();
   </script>
 </body>
 </html>
