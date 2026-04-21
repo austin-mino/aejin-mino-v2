@@ -164,25 +164,11 @@
       cursor: pointer;
       z-index: 100;
     }
-.weather-card {
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 12px;
-  background: var(--card);
-  box-shadow: var(--shadow);
-  text-align: center;
-}
-
-.weather-card img {
-  width: 100%;
-  border-radius: 10px;
-}
-
-.weather-location {
-  margin-top: 6px;
-  font-size: 0.8rem;
-  color: var(--muted);
-}
+    .weather {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
   </style>
 </head>
 <body>
@@ -192,10 +178,7 @@
   <div class="section" id="clockSection">
     <i class="fa-regular fa-clock icon"></i> <span id="clock"></span> |
     <i class="fa-regular fa-calendar icon"></i> <span id="date"></span>
-    <div class="weather-card">
-  <img src="https://wttr.in/Daegu.png?m&lang=ko" alt="대구 상인동 날씨" />
-  <div class="weather-location">대구 상인동</div>
-</div>
+    <div class="weather" id="weather">🌦 날씨 정보를 불러오는 중...</div>
   </div>
 
   <div class="section">
@@ -332,7 +315,50 @@
         : "🌑 테마";
     };
 
+   async function loadWeather() {
+  try {
+    async function loadWeather() {
+  try {
+    const res = await fetch("https://wttr.in/Daegu?format=j1");
+    if (!res.ok) throw new Error();
 
+    const data = await res.json();
+
+    const temp = data.current_condition[0].temp_C;
+    const desc = data.current_condition[0].weatherDesc[0].value;
+
+    const icon = getIcon(desc);
+
+    document.getElementById("weather").innerText =
+      `${icon}  +${temp}°C`;
+
+  } catch (e) {
+    document.getElementById("weather").innerText =
+      "날씨 불러오기 실패";
+  }
+}
+
+function getIcon(desc) {
+  desc = desc.toLowerCase();
+
+  if (desc.includes("sun")) return "☀️";
+  if (desc.includes("cloud")) return "⛅";
+  if (desc.includes("rain")) return "🌧";
+  if (desc.includes("snow")) return "❄️";
+  if (desc.includes("thunder")) return "⛈";
+  if (desc.includes("fog") || desc.includes("mist")) return "🌫";
+
+  return "🌦";
+}
+
+loadWeather();
+  } catch (err) {
+    document.getElementById("weather").innerText =
+      "날씨 정보를 불러올 수 없습니다.";
+    console.error(err);
+  }
+}
+loadWeather();
   </script>
 </body>
 </html>
