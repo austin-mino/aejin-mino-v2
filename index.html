@@ -315,19 +315,26 @@
         : "🌑 테마";
     };
 
-    async function loadWeather() {
-      try {
-        const res = await fetch("https://wttr.in/Daegu?format=3");
-        if (!res.ok) throw new Error("네트워크 응답 실패");
-        const text = await res.text();
-        document.getElementById("weather").innerText = `대구 상인동 날씨: ${text}`;
-      } catch (err) {
-        document.getElementById("weather").innerText =
-          "날씨 정보를 불러올 수 없습니다.";
-        console.error(err);
+   async function loadWeather() {
+  try {
+    const res = await fetch("https://wttr.in/Daegu?format=3", {
+      headers: {
+        "User-Agent": "curl"
       }
-    }
-    loadWeather();
+    });
+
+    if (!res.ok) throw new Error("네트워크 응답 실패");
+
+    const text = await res.text();
+    document.getElementById("weather").innerText =
+      `대구 상인동 날씨: ${text}`;
+  } catch (err) {
+    document.getElementById("weather").innerText =
+      "날씨 정보를 불러올 수 없습니다.";
+    console.error(err);
+  }
+}
+loadWeather();
   </script>
 </body>
 </html>
